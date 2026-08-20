@@ -132,7 +132,10 @@ Twitter US Airline Sentiment/
 │   ├── model_comparison.png
 │   ├── confusion_matrix_best.png
 │   └── confusion_matrix_all.png
-├── requirements.txt                      # Dependencies
+├── streamlit/                            # Streamlit demo app
+│   ├── app.py                            # Main Streamlit application
+│   └── requirements.txt                  # App dependencies
+├── requirements.txt                      # Project dependencies
 ├── README.md                             # Project documentation
 └── .gitignore
 ```
@@ -169,6 +172,7 @@ Twitter US Airline Sentiment/
 
 ### 4. Modeling & Evaluation (`04_modeling.ipynb`)
 - **7 models compared**: 3 baseline + 3 tuned + 1 ensemble
+- **SMOTE** applied for class imbalance handling
 - **Hyperparameter tuning** with GridSearchCV (5-fold CV)
 - **Confusion matrix** analysis for all models
 - **Error analysis** with example misclassifications
@@ -177,6 +181,16 @@ Twitter US Airline Sentiment/
 ---
 
 ## Model Performance
+
+### SMOTE Impact
+
+| Model | Accuracy (Before) | Accuracy (After) | Change |
+|-------|:-----------------:|:----------------:|:------:|
+| **MultinomialNB** | 0.6916 | **0.7893** | ↑0.0977 |
+| **LinearSVC** | **0.8036** | 0.7889 | ↓0.0147 |
+| **RandomForest** | 0.7531 | 0.7609 | ↑0.0079 |
+
+**Key Finding:** SMOTE significantly improves MultinomialNB (+9.77%) by balancing class representation. LinearSVC shows slight decrease but better recall for minority classes.
 
 ### Overall Comparison
 
@@ -317,6 +331,20 @@ label = le.inverse_transform(pred)[0]
 print(f"Sentiment: {label.upper()}")
 ```
 
+### Run Streamlit Demo
+
+```bash
+cd streamlit
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+This launches an interactive web app where you can:
+- Input tweet text for sentiment prediction
+- View confidence scores with ECharts gauge
+- See bar chart and radar chart visualizations
+- Explore word cloud and word frequency treemap
+
 ---
 
 ## Technologies Used
@@ -324,9 +352,10 @@ print(f"Sentiment: {label.upper()}")
 - **Python 3.13**
 - **Data Manipulation**: Pandas, NumPy
 - **NLP**: NLTK, spaCy
-- **Visualization**: Matplotlib, Seaborn, WordCloud
-- **Machine Learning**: Scikit-learn (LinearSVC, MultinomialNB, RandomForest, TF-IDF)
+- **Visualization**: Matplotlib, Seaborn, WordCloud, Apache ECharts
+- **Machine Learning**: Scikit-learn (LinearSVC, MultinomialNB, RandomForest, TF-IDF, SMOTE)
 - **Model Persistence**: Joblib
+- **Demo**: Streamlit
 - **Development**: Jupyter Notebook
 
 ---
@@ -335,9 +364,9 @@ print(f"Sentiment: {label.upper()}")
 
 - [ ] Add word embeddings (Word2Vec, GloVe) for richer text representation
 - [ ] Try deep learning models (LSTM, BERT) for better context understanding
-- [ ] Address class imbalance with oversampling (SMOTE) or class weights
+- [x] Address class imbalance with oversampling (SMOTE) or class weights
 - [ ] Add real-time Twitter API integration for live sentiment monitoring
-- [ ] Build Streamlit demo for interactive prediction
+- [x] Build Streamlit demo for interactive prediction
 - [ ] Deploy model as REST API for production use
 
 ---
@@ -346,6 +375,7 @@ print(f"Sentiment: {label.upper()}")
 
 - **Linear models often outperform complex models on text data** — LinearSVC beat RandomForest and Ensemble methods
 - **Class imbalance matters** — negative tweets dominate (62.7%), so F1-score macro is more informative than accuracy
+- **SMOTE helps differently per model** — MultinomialNB gained +9.77% accuracy, LinearSVC lost slightly but improved minority recall
 - **Neutral sentiment is hardest to classify** — it shares features with both positive and negative
 - **TF-IDF with bigrams captures enough context** — no need for more complex embeddings for this dataset
 - **Preprocessing helps but doesn't solve everything** — text length reduced 21.2%, but semantic understanding still limited
