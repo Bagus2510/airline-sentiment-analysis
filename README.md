@@ -266,38 +266,43 @@ Twitter US Airline Sentiment/
 ## Installation & Usage
 
 ### Prerequisites
-- Python 3.13+
-- Jupyter Notebook
+- Python 3.10+
+- pip
+- Git
 
-### Setup
+### Quick Start
 
 ```bash
 # Clone repository
 git clone https://github.com/yourusername/Twitter-US-Airline-Sentiment
 cd Twitter-US-Airline-Sentiment
 
-# Create virtual environment (recommended)
+# Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+venv\Scripts\activate  # Windows
 
 # Install dependencies
 pip install -r requirements.txt
-
-# Download NLTK data
-python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords')"
 ```
 
 ### Run Notebooks
 
 ```bash
-jupyter notebook notebooks/
+cd notebooks
+jupyter notebook
 ```
 
-Run notebooks in sequence:
-1. `01_eda.ipynb` — Data exploration
-2. `02_preprocessing.ipynb` — Text cleaning
-3. `03_feature_extraction.ipynb` — TF-IDF features
-4. `04_modeling.ipynb` — Model training & evaluation
+Run in sequence: `01_eda.ipynb` → `02_preprocessing.ipynb` → `03_feature_extraction.ipynb` → `04_modeling.ipynb`
+
+### Run Streamlit Demo
+
+```bash
+cd streamlit
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+> **Detailed guide**: [docs/RUNNING_GUIDE.md](docs/RUNNING_GUIDE.md)
 
 ### Load Trained Model
 
